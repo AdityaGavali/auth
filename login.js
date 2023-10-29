@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const express = require("express");
 const bodyParser = require("body-parser");
 const encoder = bodyParser.urlencoded();
@@ -9,8 +9,8 @@ app.use("/assets", express.static("assets"));
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "aditya",
-  database: "CNS",
+  password: "Tejas14@",
+  database: "cns",
 });
 
 // connect to the database
@@ -29,7 +29,7 @@ app.post("/", encoder, function (req, res) {
   var passkey = encrypt(req.body.password);
   console.log(passkey);
   connection.query(
-    "select * from user_log_in_details where user_email = ? and user_pass = ?",
+    "select * from user_details where user_email = ? and user_pass = ?",
     [username, password],
     function (error, results, fields) {
       if (results.length > 0) {
@@ -54,11 +54,12 @@ app.post("/register", encoder, function (req, res) {
   var password = req.body.password;
 
   connection.query(
-    "INSERT INTO user_log_in_details (user_name, user_email, user_pass) VALUES (?, ?, ?)",
+    "INSERT INTO user_details (user_name, user_email, user_pass) VALUES (?, ?, ?)",
     [name, email, password],
     function (error, results, fields) {
       if (error) {
         console.log("Error registering user: " + error.message);
+        alert("")
         res.redirect("/"); // Redirect to the main page on error
       } else {
         console.log("User registered successfully!");
